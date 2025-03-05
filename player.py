@@ -4,8 +4,8 @@ from settings import WIDTH, HEIGHT  # Import screen dimensions
 
 player_size = 20  # Player size
 friction = 0.9  # Friction for player movement
-speed = 5  # Player speed
-max_speed = 7  # Limit to prevent infinite acceleration
+speed = 3  # Player speed
+max_speed = 5  # Limit to prevent infinite acceleration
 
 # Define margin to prevent touching edges
 MARGIN = 0

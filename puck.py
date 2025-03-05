@@ -3,7 +3,7 @@ import math
 from settings import WIDTH, HEIGHT  # Import screen dimensions
 
 puck_size = 10  # Puck size
-puck_speed = 7  # Puck speed
+puck_speed = 13  # Puck speed
 friction = 0.99  # Puck friction
 player_size = 20  # Player size
 
@@ -49,7 +49,17 @@ class Puck:
         if self.has_owner:
             # Calculate shot direction
             angle = math.atan2(mouse_pos[1] - player.pos[1], mouse_pos[0] - player.pos[0])
-            self.vel = [math.cos(angle) * shot_power, math.sin(angle) * shot_power]
+
+            # Move the puck slightly forward before setting velocity
+            push_distance = 5  # Adjust if needed
+            self.pos[0] += math.cos(angle) * push_distance
+            self.pos[1] += math.sin(angle) * push_distance
+
+            # Apply shot power and add player's momentum
+            self.vel = [
+                math.cos(angle) * shot_power + player.vel[0],
+                math.sin(angle) * shot_power + player.vel[1]
+            ]
 
             # Release puck
             self.has_owner = False

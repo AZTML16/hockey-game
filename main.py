@@ -3,6 +3,7 @@ import math
 from settings import WIDTH, HEIGHT, FPS, screen, clock
 from player import Player
 from puck import Puck, puck_speed
+from net import Net  # Import the Net class
 
 # Initialize pygame
 pygame.init()
@@ -19,6 +20,10 @@ puck_size = 10
 player = Player()
 puck = Puck()
 
+# Create nets (placed near the left and right edges)
+net1 = Net(PLAY_AREA_WIDTH // 4 - 12, HEIGHT // 2 - 50, facing_left=True)  # Left net (right side is the scoring side)
+net2 = Net(4 * PLAY_AREA_WIDTH // 4 - 12, HEIGHT // 2 - 50, facing_left=False)  # Right net (left side is the scoring side)
+
 # Main game loop
 running = True
 while running:
@@ -28,7 +33,6 @@ while running:
     # Calculate the offset to center the fixed-size play area in the window
     offset_x = (WIDTH - PLAY_AREA_WIDTH) // 2
     offset_y = (HEIGHT - PLAY_AREA_HEIGHT) // 2
-
 
     # Fill screen with black
     screen.fill((0, 0, 0))
@@ -69,9 +73,22 @@ while running:
     if player.pos[1] <= offset_y + player_size or player.pos[1] >= offset_y + PLAY_AREA_HEIGHT - player_size:
         player.vel[1] = -player.vel[1]  # Reverse vertical velocity if touching the white line
 
-    # Draw the player and puck
+    # Check if puck has scored in any net
+    if net1.check_goal(puck, player):
+        print("Goal in left net!")
+        puck.pos = [WIDTH // 2, HEIGHT // 2]  # Reset puck position
+        puck.vel = [0, 0]  # Stop puck
+
+    if net2.check_goal(puck, player):
+        print("Goal in right net!")
+        puck.pos = [WIDTH // 2, HEIGHT // 2]  # Reset puck position
+        puck.vel = [0, 0]  # Stop puck
+
+    # Draw the player, puck, and nets
     player.draw(screen)
     puck.draw(screen)
+    net1.draw(screen)  # Draw the left net
+    net2.draw(screen)  # Draw the right net
 
     # Draw the white lines (acting as the boundary)
     pygame.draw.line(screen, (255, 255, 255), (offset_x, offset_y), (offset_x + PLAY_AREA_WIDTH, offset_y), 5)  # Top line
