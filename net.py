@@ -24,7 +24,6 @@ class Net:
                 player.pos = [WIDTH // 2, HEIGHT // 2]  # Reset player position
                 puck.pos = [WIDTH // 2, HEIGHT // 2]  # Reset puck position
                 return True  # Goal scored
-
         else:
             # Left side of the right net (scoring side)
             if self.pos[0] <= puck.pos[0] <= self.pos[0] + self.width and self.pos[1] <= puck.pos[1] <= self.pos[1] + self.height:
@@ -32,5 +31,4 @@ class Net:
                 player.pos = [WIDTH // 2, HEIGHT // 2]  # Reset player position
                 puck.pos = [WIDTH // 2, HEIGHT // 2]  # Reset puck position
                 return True  # Goal scored
-        
         return False
