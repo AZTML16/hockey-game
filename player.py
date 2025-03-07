@@ -3,9 +3,10 @@ import math
 from settings import WIDTH, HEIGHT  # Import screen dimensions
 
 player_size = 20  # Player size
-friction = 0.9  # Friction for player movement
-speed = 3  # Player speed
-max_speed = 5  # Limit to prevent infinite acceleration
+friction = 0.99  # Friction for player movement
+speed = 2  # Player speed
+max_speed = 4  # Limit to prevent infinite acceleration
+stop_friction = 0.85 #not an immediate stop
 
 # Define margin to prevent touching edges
 MARGIN = 0
@@ -30,9 +31,10 @@ class Player:
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
             self.vel[1] += speed
 
-        # Stop instantly when pressing Q
+        # Stop (not instantly) when pressing Q
         if keys[pygame.K_q]:
-            self.vel = [0, 0]
+            self.vel[0] *= stop_friction
+            self.vel[1] *= stop_friction
 
         # Apply friction
         self.vel[0] *= friction
